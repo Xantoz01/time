@@ -65,37 +65,37 @@ def default_hours_worked():
 
 
 def main():
-    st.title("Work Hours and Kilometers Tracker")
-    st.write("A simple web app to track hours spent on work and kilometers driven.")
+    st.title("Time og kilometer logger")
+    st.write("Savsmuld, tid og kørsel - Den ultimative følgesvend for byggevirker.")
 
     conn = create_connection()
     init_db(conn)
 
-    st.sidebar.header("Add new entry")
+    st.sidebar.header("Tilføj")
     date = st.sidebar.date_input("Date", value=datetime.today(), key="add_date")
     
     default_hours = default_hours_worked()
     hours_options = [round(x * 0.5, 1) for x in range(0, 49)]  # List of possible hours from 0 to 24 with 0.5 hour intervals
-    hours_worked = st.sidebar.selectbox("Hours worked", options=hours_options, key="add_hours_worked", index=hours_options.index(default_hours))
+    hours_worked = st.sidebar.selectbox("Timer", options=hours_options, key="add_hours_worked", index=hours_options.index(default_hours))
     
-    km_driven = st.sidebar.number_input("Kilometers driven", min_value=0.0, step=0.1, key="add_km_driven")
+    km_driven = st.sidebar.number_input("Kilometer kørt", min_value=0.0, step=0.1, key="add_km_driven")
 
-    if st.sidebar.button("Add entry"):
+    if st.sidebar.button("Tilføj"):
         insert_data(conn, date, hours_worked, km_driven)
         st.sidebar.success("Entry added successfully.")
 
-    st.sidebar.header("Edit or delete entry")
+    st.sidebar.header("Ret eller slet")
     entry_id = st.sidebar.number_input("Entry ID", min_value=1, step=1, value=1)
     date_edit = st.sidebar.date_input("Date", value=datetime.today(), key="edit_date")
     
-    hours_worked_edit = st.sidebar.selectbox("Hours worked", options=hours_options, key="edit_hours_worked", index=hours_options.index(default_hours))
-    km_driven_edit = st.sidebar.number_input("Kilometers driven", min_value=0.0, step=0.1, key="edit_km_driven")
+    hours_worked_edit = st.sidebar.selectbox("Timer", options=hours_options, key="edit_hours_worked", index=hours_options.index(default_hours))
+    km_driven_edit = st.sidebar.number_input("Kilometer kørt", min_value=0.0, step=0.1, key="edit_km_driven")
 
-    if st.sidebar.button("Update entry"):
+    if st.sidebar.button("Ret"):
         update_data(conn, entry_id, date_edit, hours_worked_edit, km_driven_edit)
         st.sidebar.success("Entry updated successfully.")
 
-    if st.sidebar.button("Delete entry"):
+    if st.sidebar.button("Slet"):
         delete_data(conn, entry_id)
         st.sidebar.success("Entry deleted successfully.")
 
